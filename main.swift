@@ -6,10 +6,7 @@ if CommandLine.argc != 2 {
     let inputString = try String(contentsOfFile: CommandLine.arguments[1], encoding: String.Encoding.utf8)
     print(inputString)
     do {
-        try lexer.tokenize(inputString) { t in
-            try parser.consume(token: t.0, code: t.1)
-        }
-        let tree = try parser.endParsing()
+        let tree = try parseSGF(inputString)
         print(String(reflecting: tree))
     } catch (let error) {
         print("Error during parsing: \(error)")

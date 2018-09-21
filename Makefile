@@ -12,13 +12,10 @@ run: ${NAME}
 	./${NAME} test.sgf
 
 clean:
-	rm -rf ./${NAME} ${GRAMMAR}.swift ${CITRON}
-
-${CITRON}: ${SRC}/citron.c
-	mkdir -p ${BIN} && ${CC} $^ -o $@
+	rm -rf ./${NAME} ${GRAMMAR}.swift
 
 ${GRAMMAR}.swift: ${CITRON} ${GRAMMAR}.cy
 	${CITRON} ${GRAMMAR}.cy -o $@
 
-${NAME}: ${SRC}/CitronParser.swift ${SRC}/CitronLexer.swift ${GRAMMAR}.swift SGFLexer.swift main.swift
+${NAME}: ${SRC}/CitronParser.swift ${SRC}/CitronLexer.swift ${GRAMMAR}.swift SGFParser_utils.swift main.swift
 	${SWIFTC} $^ -o $@

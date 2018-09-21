@@ -1,17 +1,17 @@
 %class_name SGFParser
-%token_type Token
+%token_type SGFToken
 %nonterminal_type value String
-%nonterminal_type c_value_type CValueType
-%nonterminal_type prop_value CValueType
-%nonterminal_type prop_value_list "[CValueType]"
-%nonterminal_type property "(String, [CValueType])"
-%nonterminal_type property_list "[(String, [CValueType])]"
-%nonterminal_type node Node
-%nonterminal_type sequence Node
-%nonterminal_type gametree Node
-%nonterminal_type gametree_list "[Node]"
-%nonterminal_type collection "[Node]"
-%nonterminal_type output "[Node]"
+%nonterminal_type c_value_type SGFCValueType
+%nonterminal_type prop_value SGFCValueType
+%nonterminal_type prop_value_list "[SGFCValueType]"
+%nonterminal_type property "(String, [SGFCValueType])"
+%nonterminal_type property_list "[(String, [SGFCValueType])]"
+%nonterminal_type node SGFNode
+%nonterminal_type sequence SGFNode
+%nonterminal_type gametree SGFNode
+%nonterminal_type gametree_list "[SGFNode]"
+%nonterminal_type collection "[SGFNode]"
+%nonterminal_type output "[SGFNode]"
 
 output ::= collection(a). {
     return a
@@ -52,10 +52,10 @@ sequence ::= node(a) sequence(b). {
 }
 
 node ::= SEMICOLUMN. {
-    return Node()
+    return SGFNode()
 }
 node ::= SEMICOLUMN property_list(a). {
-    let node = Node()
+    let node = SGFNode()
     for (k, v) in a {
         node.properties[k] = v
     }
