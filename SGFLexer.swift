@@ -24,6 +24,13 @@ enum CValueType {
 class Node {
     var properties: [String: [CValueType]] = [:]
     var children: [Node] = []
+
+}
+
+extension Node: CustomDebugStringConvertible {
+    var debugDescription: String {
+        return "\(properties), \(children.count) children"
+    }
 }
 
 // Create parser
@@ -36,12 +43,12 @@ let parser = SGFParser()
 typealias Lexer = CitronLexer<(Token, SGFParser.CitronTokenCode)>
 
 let lexer = Lexer(rules: [
-    .string("(", (.punctuation, .OPEN_PARENTHESIS)),
-    .string(")", (.punctuation, .CLOSE_PARENTHESIS)),
-    .string("[", (.punctuation, .OPEN_BRACKET)),
-    .string("]", (.punctuation, .CLOSE_BRACKET)),
+    .regexPattern("\\s*\\(", { _ in (.punctuation, .OPEN_PARENTHESIS) }),
+    .regexPattern("\\)\\s*", { _ in (.punctuation, .CLOSE_PARENTHESIS) }),
+    .regexPattern("\\s*\\[", { _ in (.punctuation, .OPEN_BRACKET) }),
+    .regexPattern("\\]\\s*", { _ in (.punctuation, .CLOSE_BRACKET) }),
+    .regexPattern("\\s*;", { _ in (.punctuation, .SEMICOLUMN) }),
     .string(":", (.punctuation, .COLUMN)),
-    .string(";", (.punctuation, .SEMICOLUMN)),
     .regexPattern("[A-Z]+", { str in (.identifier(str), .PROP_INDENT) }),
-    .regexPattern("([^:\\\\\\]]|\\.)*", { str in (.value(str), .VALUE) })
+    .regexPattern("([^:\\\\\\]]|\\\\.)*", { str in (.value(str), .VALUE) }),
 ])

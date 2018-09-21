@@ -9,7 +9,7 @@ CITRON = ${BIN}/citron
 build: ${NAME}
 
 run: ${NAME}
-	./${NAME} "1 + 2 * 3 - 4"
+	./${NAME} test.sgf
 
 clean:
 	rm -rf ./${NAME} ${GRAMMAR}.swift ${CITRON}

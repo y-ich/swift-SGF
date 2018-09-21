@@ -1,5 +1,6 @@
 %class_name SGFParser
 %token_type Token
+%nonterminal_type value String
 %nonterminal_type c_value_type CValueType
 %nonterminal_type prop_value CValueType
 %nonterminal_type prop_value_list "[CValueType]"
@@ -79,6 +80,9 @@ prop_value_list ::= prop_value(a) prop_value_list(b). {
     return [a] + b
 }
 
+prop_value ::= OPEN_BRACKET CLOSE_BRACKET. {
+    return .single("")
+}
 prop_value ::= OPEN_BRACKET c_value_type(a) CLOSE_BRACKET. {
     return a
 }
