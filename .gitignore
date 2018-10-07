@@ -1,2 +1,4 @@
-SGFParser
-SGFParser.swift
+.DS_Store
+/.build
+/Packages
+/*.xcodeproj

@@ -1,21 +1,16 @@
 GRAMMAR = SGFParser
-NAME = SGFParser
 CC = clang
 SWIFTC = swiftc
+TARGET_DIR = Sources/SGF
+TARGET = ${TARGET_DIR}/${GRAMMAR}.swift
 BIN = ~/OpenSources/citron/bin
 SRC = ~/OpenSources/citron/src
 CITRON = ${BIN}/citron
 
-build: ${NAME}
-
-run: ${NAME}
-	./${NAME} test.sgf
+build: ${TARGET}
 
 clean:
-	rm -rf ./${NAME} ${GRAMMAR}.swift
+	rm -rf ${TARGET}
 
-${GRAMMAR}.swift: ${CITRON} ${GRAMMAR}.cy
+${TARGET}: ${CITRON} ${GRAMMAR}.cy
 	${CITRON} ${GRAMMAR}.cy -o $@
-
-${NAME}: ${SRC}/CitronParser.swift ${SRC}/CitronLexer.swift ${GRAMMAR}.swift SGFParser_utils.swift main.swift
-	${SWIFTC} $^ -o $@
