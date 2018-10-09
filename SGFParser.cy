@@ -80,18 +80,11 @@ prop_value_list ::= prop_value(a) prop_value_list(b). {
     return [a] + b
 }
 
-prop_value ::= OPEN_BRACKET CLOSE_BRACKET. {
-    return .single("")
+prop_value ::= SINGLE(a). {
+    return try a.toSGFCValueType()
 }
-prop_value ::= OPEN_BRACKET c_value_type(a) CLOSE_BRACKET. {
-    return a
-}
-
-c_value_type ::= VALUE(a). {
-    return .single(a.toValueString()!)
-}
-c_value_type ::= VALUE(a) COLUMN VALUE(b). {
-    return .compose(a.toValueString()!, b.toValueString()!)
+prop_value ::= COMPOSE(a). {
+    return try a.toSGFCValueType()
 }
 
 //value_type ::= NUMBER | REAL | DOUBLE | COLOR | SIMPLE_TEXT | TEXT | POINT | MOVE | STONE

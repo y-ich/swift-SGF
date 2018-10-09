@@ -8,8 +8,8 @@
 
 import Foundation
 
-class SGFEncoder {
-    static func encode(collection: [SGFNode]) -> String {
+public class SGFEncoder {
+    public static func encode(collection: [SGFNode]) -> String {
         return collection.map { self.encode(gameTree: $0) }.joined(separator: "\n")
     }
 
