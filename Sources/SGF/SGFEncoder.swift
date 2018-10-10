@@ -8,7 +8,9 @@
 
 import Foundation
 
+/// an encoder to stringify a SGF object
 public class SGFEncoder {
+    /// encodes a collection
     public static func encode(collection: [SGFNode]) -> String {
         return collection.map { self.encode(gameTree: $0) }.joined(separator: "\n")
     }

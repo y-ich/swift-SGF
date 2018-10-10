@@ -6,7 +6,7 @@ enum SGFParserError: Error {
 
 enum SGFToken {
     case punctuation
-    case identifier(String) // for identifiers
+    case identifier(String)
     case single(String)
     case compose(String, String)
 
@@ -29,17 +29,24 @@ enum SGFToken {
     }
 }
 
+/// CValueType
 public enum SGFCValueType {
+    /// represents a single value
     case single(String)
+    /// represents a compose with two values
     case compose(String, String)
 }
 
+/// A node class
 public class SGFNode {
+    /// SGF propertes as Dictionary
     public var properties: [String: [SGFCValueType]] = [:]
+    /// children of this node
     public var children: [SGFNode] = []
 
     public init() { }
 
+    // returns a leaf node through primary variation
     public func primaryLeafNode() -> SGFNode {
         var node = self
         while node.children.count > 0 {
@@ -55,13 +62,19 @@ extension SGFNode: CustomDebugStringConvertible {
     }
 }
 
+/**
+ parses a string in SGF
+ - Parameter sgf: SGF string
+ - Throws: when fails to parse
+ - Returns: a collection, or array with one or more SGFNodes
+*/
 public func parseSGF(_ sgf: String) throws -> [SGFNode] {
     let parser = SGFParser()
     // parser.isTracingEnabled = true
 
     typealias Lexer = CitronLexer<(SGFToken, SGFParser.CitronTokenCode)>
     let singleRegex = "\\s*\\[((?:\\\\.|[^\\\\:\\]])*)\\]\\s*"
-    let doubleRegex = "\\s*\\[((?:\\\\.|[^\\\\:\\]])*):((?:\\\\.|[^\\\\:\\]])*)\\]\\s*"
+    let composeRegex = "\\s*\\[((?:\\\\.|[^\\\\:\\]])*):((?:\\\\.|[^\\\\:\\]])*)\\]\\s*"
     let lexer = Lexer(rules: [
         .regexPattern("\\s*\\(", { _ in (.punctuation, .OPEN_PARENTHESIS) }),
         .regexPattern("\\)\\s*", { _ in (.punctuation, .CLOSE_PARENTHESIS) }),
@@ -71,8 +84,8 @@ public func parseSGF(_ sgf: String) throws -> [SGFNode] {
             let groups = match.groups(testedString: str)
             return (.single(groups[1]), .SINGLE)
         }),
-        .regexPattern(doubleRegex, { str in
-            let regex = try! NSRegularExpression(pattern: doubleRegex)
+        .regexPattern(composeRegex, { str in
+            let regex = try! NSRegularExpression(pattern: composeRegex)
             let match = regex.firstMatch(in: str, range: NSMakeRange(0, str.count))!
             let groups = match.groups(testedString: str)
             return (.compose(groups[1], groups[2]), .COMPOSE)
