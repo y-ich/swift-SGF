@@ -11,7 +11,7 @@ final class SGFUsage: XCTestCase {
 
         // To access a property, you can refer properties.
         // Every value of each property is an array of "SGFCValueType"
-        XCTAssertEqual(try! root.getValues(of: "FF")?[0], "4")
+        XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
     }
 
     func testUsageSGFEncoder() {
@@ -29,6 +29,6 @@ final class SGFTests: XCTestCase {
         let inputString = "(;FF[4]GN[\\:日本語\\]:a]CA[]\n(;B[bb])(;B[cc]))"
         let collection = try! parseSGF(inputString)
         let root = collection[0]
-        XCTAssertEqual(try! root.getValues(of: "FF")?[0], "4")
+        XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
     }
 }
