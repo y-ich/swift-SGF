@@ -2,12 +2,13 @@ import Foundation
 
 enum SGFParserError: Error {
     case invalidToken
+    case invalidValueType
 }
 
 enum SGFToken {
     case punctuation
     case identifier(String)
-    case single(String)
+    case value(String)
     case compose(String, String)
 
     func toIdentifierString() -> String? {
@@ -19,8 +20,8 @@ enum SGFToken {
 
     func toSGFCValueType() throws -> SGFCValueType {
         switch self {
-        case .single(let value):
-            return .single(value)
+        case .value(let value):
+            return .value(value)
         case .compose(let v1, let v2):
             return .compose(v1, v2)
         default:
@@ -32,10 +33,19 @@ enum SGFToken {
 /// CValueType
 public enum SGFCValueType {
     /// represents a single value
-    case single(String)
+    case value(String)
     /// represents a compose with two values
     case compose(String, String)
 }
+
+enum SGFDouble: Int {
+    case normal = 1
+    case emphasized = 2
+}
+typealias SGFText = String
+typealias SGFSimpleText = String
+typealias SGFColor = String
+typealias SGFNone = String
 
 /// A node class
 public class SGFNode {
@@ -45,6 +55,34 @@ public class SGFNode {
     public var children: [SGFNode] = []
 
     public init() { }
+
+    public func getValues(of ident: String) throws -> [String]? {
+        return try properties[ident]?.map {
+            if case let .value(value) = $0 {
+                return value
+            } else {
+                throw SGFParserError.invalidValueType
+            }
+        }
+    }
+
+    public func setValues(of ident: String, values: [String]) {
+        properties[ident] = values.map { .value($0) }
+    }
+
+    public func getComposes(of ident: String) throws -> [(String, String)]? {
+        return try properties[ident]?.map {
+            if case let .compose(v1, v2) = $0 {
+                return (v1, v2)
+            } else {
+                throw SGFParserError.invalidValueType
+            }
+        }
+    }
+
+    public func setComposes(of ident: String, values: [(String, String)]) {
+        properties[ident] = values.map { .compose($0.0, $0.1) }
+    }
 
     // returns a leaf node through primary variation
     public func primaryLeafNode() -> SGFNode {
@@ -73,16 +111,16 @@ public func parseSGF(_ sgf: String) throws -> [SGFNode] {
     // parser.isTracingEnabled = true
 
     typealias Lexer = CitronLexer<(SGFToken, SGFParser.CitronTokenCode)>
-    let singleRegex = "\\s*\\[((?:\\\\.|[^\\\\:\\]])*)\\]\\s*"
+    let valueRegex = "\\s*\\[((?:\\\\.|[^\\\\:\\]])*)\\]\\s*"
     let composeRegex = "\\s*\\[((?:\\\\.|[^\\\\:\\]])*):((?:\\\\.|[^\\\\:\\]])*)\\]\\s*"
     let lexer = Lexer(rules: [
         .regexPattern("\\s*\\(", { _ in (.punctuation, .OPEN_PARENTHESIS) }),
         .regexPattern("\\)\\s*", { _ in (.punctuation, .CLOSE_PARENTHESIS) }),
-        .regexPattern(singleRegex, { str in
-            let regex = try! NSRegularExpression(pattern: singleRegex)
+        .regexPattern(valueRegex, { str in
+            let regex = try! NSRegularExpression(pattern: valueRegex)
             let match = regex.firstMatch(in: str, range: NSMakeRange(0, str.count))!
             let groups = match.groups(testedString: str)
-            return (.single(groups[1]), .SINGLE)
+            return (.value(groups[1]), .SINGLE)
         }),
         .regexPattern(composeRegex, { str in
             let regex = try! NSRegularExpression(pattern: composeRegex)

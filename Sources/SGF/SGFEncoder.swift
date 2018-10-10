@@ -33,7 +33,7 @@ public class SGFEncoder {
     }
     static func encode(cv: SGFCValueType) -> String {
         switch cv {
-        case let .single(v):
+        case let .value(v):
             return encode(text: v)
         case let .compose(v1, v2):
             return encode(text: v1) + ":" + encode(text: v2)
