@@ -26,7 +26,7 @@ final class SGFUsage: XCTestCase {
 
 final class SGFTests: XCTestCase {
     func testParseSGF() {
-        let inputString = "(;FF[4]GN[\\:日本語\\]:a]CA[]\n(;B[bb])(;B[cc]))"
+        let inputString = "(;FF[4]GN[\\:日本語\\]:a]CA[]\r\n(;B[bb])(;B[cc]))"
         let collection = try! parseSGF(inputString)
         let root = collection[0]
         XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
