@@ -1,7 +1,7 @@
 import XCTest
 
-import swift_SGFTests
+import SGFTests
 
 var tests = [XCTestCaseEntry]()
-tests += swift_SGFTests.allTests()
+tests += SGFTests.allTests()
 XCTMain(tests)

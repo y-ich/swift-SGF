@@ -20,7 +20,7 @@ final class SGFUsage: XCTestCase {
 
         // You can use SGFEncoder.encode(collection:) to stringify a collection, [SGFNode].
         let str = SGFEncoder.encode(collection: collection)
-        XCTAssertEqual(str, inputString)
+        XCTAssert(str == inputString || str == "(;GM[1]FF[4])")
     }
 }
 
@@ -31,4 +31,8 @@ final class SGFTests: XCTestCase {
         let root = collection[0]
         XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
     }
+
+    static var allTests = [
+        ("testParseSGF", testParseSGF),
+    ]
 }
