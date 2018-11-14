@@ -38,6 +38,18 @@ public enum SGFCValueType {
     case compose(String, String)
 }
 
+extension SGFCValueType: Equatable {
+    public static func ==(lhs: SGFCValueType, rhs: SGFCValueType) -> Bool {
+        if case let .value(l) = lhs, case let .value(r) = rhs {
+            return l == r
+        } else if case let .compose(l1, l2) = lhs, case let .compose(r1, r2) = rhs {
+            return l1 == r1 && l2 == r2
+        } else {
+            return false
+        }
+    }
+}
+
 enum SGFDouble: Int {
     case normal = 1
     case emphasized = 2
