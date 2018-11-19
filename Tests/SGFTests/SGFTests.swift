@@ -32,7 +32,33 @@ final class SGFTests: XCTestCase {
         XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
     }
 
+    func testParseSGFNewLine() {
+        let inputString = "(;FF[4];\nTB[ka:pa])"
+        let collection = try! parseSGF(inputString)
+        let root = collection[0]
+        XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
+    }
+
+    func testParseSGF_issue13() {
+        // KGSのSGFには:のエスケープ忘れがある。
+        let inputString = try! String(contentsOfFile: "/Users/yuji/Projects/swift-SGF/Tests/SGFTests/#13.sgf")
+        let collection = try! parseSGF(inputString)
+        let root = collection[0]
+        XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
+    }
+
+    func testParseSGF_issue17() {
+        // KGSのSGFには:のエスケープ忘れがある。
+        let inputString = try! String(contentsOfFile: "/Users/yuji/Projects/swift-SGF/Tests/SGFTests/#17.sgf")
+        let collection = try! parseSGF(inputString)
+        let root = collection[0]
+        XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
+    }
+
     static var allTests = [
+        ("testParseSGF_issue13", testParseSGF_issue13),
+        ("testParseSGF_issue17", testParseSGF_issue17),
+        ("testParseSGFNewLine", testParseSGFNewLine),
         ("testParseSGF", testParseSGF),
     ]
 }

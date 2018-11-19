@@ -140,7 +140,7 @@ public func parseSGF(_ sgf: String) throws -> [SGFNode] {
             let groups = match.groups(testedString: str)
             return (.compose(groups[1], groups[2]), .COMPOSE)
         }),
-        .regexPattern("\\s*;", { _ in (.punctuation, .SEMICOLUMN) }),
+        .regexPattern("\\s*;\\s*", { _ in (.punctuation, .SEMICOLUMN) }),
         .regexPattern("[A-Z]+", { str in (.identifier(str), .PROP_INDENT) }),
     ])
 
