@@ -25,18 +25,17 @@ class SGFParser: CitronParser {
     }
 
     enum CitronNonTerminalCode: CitronSymbolNumber {
-      case value                          =   7
-      case c_value_type                   =   8
-      case prop_value                     =   9
-      case prop_value_list                =  10
-      case property                       =  11
-      case property_list                  =  12
-      case node                           =  13
-      case sequence                       =  14
-      case gametree                       =  15
-      case gametree_list                  =  16
-      case collection                     =  17
-      case output                         =  18
+      case c_value_type                   =   7
+      case prop_value                     =   8
+      case prop_value_list                =   9
+      case property                       =  10
+      case property_list                  =  11
+      case node                           =  12
+      case sequence                       =  13
+      case gametree                       =  14
+      case gametree_list                  =  15
+      case collection                     =  16
+      case output                         =  17
     }
 
     enum CitronSymbolCode : RawRepresentable, Equatable {
@@ -51,7 +50,7 @@ class SGFParser: CitronParser {
                 self = .endOfInput
             } else if (rawValue < 7) {
                 self = .token(CitronTokenCode(rawValue: rawValue)!)
-            } else if (rawValue < 19) {
+            } else if (rawValue < 18) {
                 self = .nonterminal(CitronNonTerminalCode(rawValue: rawValue)!)
             } else {
                 fatalError()
@@ -73,25 +72,23 @@ class SGFParser: CitronParser {
     enum CitronSymbol {
         case yyBaseOfStack
         case yy0(CitronToken)
-        case yy1(SGFCValueType)
-        case yy7([SGFCValueType])
-        case yy8(SGFNode)
-        case yy17([(String, [SGFCValueType])])
-        case yy21((String, [SGFCValueType]))
-        case yy25([SGFNode])
-        case yy36(String)
+        case yy3(SGFCValueType)
+        case yy4((String, [SGFCValueType]))
+        case yy11([(String, [SGFCValueType])])
+        case yy12([SGFNode])
+        case yy15(SGFNode)
+        case yy27([SGFCValueType])
 
         func typeErasedContent() -> Any {
             switch (self) {
             case .yyBaseOfStack: fatalError()
             case .yy0(let value): return value as Any
-            case .yy1(let value): return value as Any
-            case .yy7(let value): return value as Any
-            case .yy8(let value): return value as Any
-            case .yy17(let value): return value as Any
-            case .yy21(let value): return value as Any
-            case .yy25(let value): return value as Any
-            case .yy36(let value): return value as Any
+            case .yy3(let value): return value as Any
+            case .yy4(let value): return value as Any
+            case .yy11(let value): return value as Any
+            case .yy12(let value): return value as Any
+            case .yy15(let value): return value as Any
+            case .yy27(let value): return value as Any
             }
         }
     }
@@ -100,34 +97,34 @@ class SGFParser: CitronParser {
 
     // Counts
 
-    let yyNumberOfSymbols: Int = 19
+    let yyNumberOfSymbols: Int = 18
     let yyNumberOfStates: Int = 12
 
     // Action tables
 
     let yyLookaheadAction: [(CitronSymbolNumber, CitronParsingAction)] = [
-/*   0 */  (15, .SH( 9)), ( 0, .RD( 0)), (17, .SH(11)), (18, .ACCEPT),   ( 5, .SR(16)),
-/*   5 */  ( 6, .SR(17)), ( 9, .SH( 1)), (10, .RD(15)), ( 3, .SH( 5)), ( 9, .SH( 1)),
-/*  10 */  (10, .RD(13)), ( 1, .SH( 8)), ( 2, .SR( 3)), (15, .SH( 7)), (16, .SH(10)),
-/*  15 */  (11, .SH( 4)), (12, .RD(12)), (11, .SH( 4)), (12, .RD(10)), ( 1, .SH( 8)),
-/*  20 */  (13, .SH( 6)), (14, .RD( 8)), ( 2, .SR( 4)), (15, .SH( 7)), (16, .RD( 6)),
-/*  25 */  (13, .SH( 6)), (14, .SH( 3)), (19, .RD( 2)), (15, .SH( 9)), ( 4, .SH( 2)),
-/*  30 */  (17, .RD( 2)),
+/*   0 */  (14, .SH( 9)), ( 4, .SH( 2)), (16, .SH(11)), (17, .ACCEPT),   ( 5, .SR(16)),
+/*   5 */  ( 6, .SR(17)), ( 8, .SH( 1)), ( 9, .RD(15)), ( 8, .SH( 1)), ( 9, .RD(13)),
+/*  10 */  ( 1, .SH( 8)), ( 2, .SR( 3)), ( 1, .SH( 8)), (10, .SH( 4)), (11, .RD(12)),
+/*  15 */  (14, .SH( 7)), (15, .SH(10)), (10, .SH( 4)), (11, .RD(10)), ( 3, .SH( 5)),
+/*  20 */  (12, .SH( 6)), (13, .RD( 8)), ( 2, .SR( 4)), ( 0, .RD( 0)), (14, .SH( 7)),
+/*  25 */  (15, .RD( 6)), (12, .SH( 6)), (13, .SH( 3)), (18, .RD( 2)), (14, .SH( 9)),
+/*  30 */  (18, .RD( 2)), (16, .RD( 2)),
     ]
 
-    let yyShiftUseDefault: Int = 31
-    let yyShiftOffsetMin: Int = -1
-    let yyShiftOffsetMax: Int = 25
+    let yyShiftUseDefault: Int = 32
+    let yyShiftOffsetMin: Int = -3
+    let yyShiftOffsetMax: Int = 23
     let yyShiftOffset: [Int] = [
-        /*     0 */    18,   -1,   -1,   10,   25,   25,    5,   18,    5,   18,
-        /*    10 */    20,    1,
+        /*     0 */    11,   -1,   -1,    9,   -3,   -3,   16,   11,   16,   11,
+        /*    10 */    20,   23,
     ]
 
-    let yyReduceUseDefault: Int = -16
-    let yyReduceOffsetMin: Int =   -15
-    let yyReduceOffsetMax: Int =   13
+    let yyReduceUseDefault: Int = -15
+    let yyReduceOffsetMin: Int =   -14
+    let yyReduceOffsetMax: Int =   15
     let yyReduceOffset: [Int] = [
-        /*     0 */   -15,   -3,    0,   -2,    4,    6,    7,    8,   12,   13,
+        /*     0 */   -14,   -2,    0,    1,    3,    7,    8,   10,   14,   15,
     ]
 
     let yyDefaultAction: [CitronParsingAction] = [
@@ -148,24 +145,24 @@ class SGFParser: CitronParser {
     // Rules
 
     let yyRuleInfo: [(lhs: CitronSymbolNumber, nrhs: UInt)] = [
-        (lhs: 18, nrhs: 1),
         (lhs: 17, nrhs: 1),
-        (lhs: 17, nrhs: 2),
-        (lhs: 15, nrhs: 3),
-        (lhs: 15, nrhs: 4),
         (lhs: 16, nrhs: 1),
         (lhs: 16, nrhs: 2),
-        (lhs: 14, nrhs: 1),
-        (lhs: 14, nrhs: 2),
+        (lhs: 14, nrhs: 3),
+        (lhs: 14, nrhs: 4),
+        (lhs: 15, nrhs: 1),
+        (lhs: 15, nrhs: 2),
         (lhs: 13, nrhs: 1),
         (lhs: 13, nrhs: 2),
         (lhs: 12, nrhs: 1),
         (lhs: 12, nrhs: 2),
+        (lhs: 11, nrhs: 1),
         (lhs: 11, nrhs: 2),
-        (lhs: 10, nrhs: 1),
         (lhs: 10, nrhs: 2),
         (lhs: 9, nrhs: 1),
-        (lhs: 9, nrhs: 1),
+        (lhs: 9, nrhs: 2),
+        (lhs: 8, nrhs: 1),
+        (lhs: 8, nrhs: 1),
     ]
 
     // Stack
@@ -187,18 +184,17 @@ class SGFParser: CitronParser {
     /*  4 */ "PROP_INDENT",
     /*  5 */ "SINGLE",
     /*  6 */ "COMPOSE",
-    /*  7 */ "value",
-    /*  8 */ "c_value_type",
-    /*  9 */ "prop_value",
-    /* 10 */ "prop_value_list",
-    /* 11 */ "property",
-    /* 12 */ "property_list",
-    /* 13 */ "node",
-    /* 14 */ "sequence",
-    /* 15 */ "gametree",
-    /* 16 */ "gametree_list",
-    /* 17 */ "collection",
-    /* 18 */ "output",
+    /*  7 */ "c_value_type",
+    /*  8 */ "prop_value",
+    /*  9 */ "prop_value_list",
+    /* 10 */ "property",
+    /* 11 */ "property_list",
+    /* 12 */ "node",
+    /* 13 */ "sequence",
+    /* 14 */ "gametree",
+    /* 15 */ "gametree_list",
+    /* 16 */ "collection",
+    /* 17 */ "output",
     ]
     let yyRuleText: [String] = [
         /*   0 */ "output ::= collection(a)",
@@ -233,30 +229,30 @@ class SGFParser: CitronParser {
             func codeBlockForRule00(a: [SGFNode]) throws -> [SGFNode] {
     return a
  }
-            if case .yy25(let a) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy25(try codeBlockForRule00(a: a))
+            if case .yy12(let a) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy12(try codeBlockForRule00(a: a))
             }
         case 1: /* collection ::= gametree(a) */
             func codeBlockForRule01(a: SGFNode) throws -> [SGFNode] {
     return [a]
  }
-            if case .yy8(let a) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy25(try codeBlockForRule01(a: a))
+            if case .yy15(let a) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy12(try codeBlockForRule01(a: a))
             }
         case 2: /* collection ::= gametree(a) collection(b) */
             func codeBlockForRule02(a: SGFNode, b: [SGFNode]) throws -> [SGFNode] {
     return [a] + b
  }
-            if case .yy8(let a) = yySymbolOnStack(distanceFromTop: 1),
-               case .yy25(let b) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy25(try codeBlockForRule02(a: a, b: b))
+            if case .yy15(let a) = yySymbolOnStack(distanceFromTop: 1),
+               case .yy12(let b) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy12(try codeBlockForRule02(a: a, b: b))
             }
         case 3: /* gametree ::= OPEN_PARENTHESIS sequence(a) CLOSE_PARENTHESIS */
             func codeBlockForRule03(a: SGFNode) throws -> SGFNode {
     return a
  }
-            if case .yy8(let a) = yySymbolOnStack(distanceFromTop: 1) {
-                return .yy8(try codeBlockForRule03(a: a))
+            if case .yy15(let a) = yySymbolOnStack(distanceFromTop: 1) {
+                return .yy15(try codeBlockForRule03(a: a))
             }
         case 4: /* gametree ::= OPEN_PARENTHESIS sequence(a) gametree_list(b) CLOSE_PARENTHESIS */
             func codeBlockForRule04(a: SGFNode, b: [SGFNode]) throws -> SGFNode {
@@ -267,46 +263,46 @@ class SGFParser: CitronParser {
     node.children.append(contentsOf: b)
     return a
  }
-            if case .yy8(let a) = yySymbolOnStack(distanceFromTop: 2),
-               case .yy25(let b) = yySymbolOnStack(distanceFromTop: 1) {
-                return .yy8(try codeBlockForRule04(a: a, b: b))
+            if case .yy15(let a) = yySymbolOnStack(distanceFromTop: 2),
+               case .yy12(let b) = yySymbolOnStack(distanceFromTop: 1) {
+                return .yy15(try codeBlockForRule04(a: a, b: b))
             }
         case 5: /* gametree_list ::= gametree(a) */
             func codeBlockForRule05(a: SGFNode) throws -> [SGFNode] {
     return [a]
  }
-            if case .yy8(let a) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy25(try codeBlockForRule05(a: a))
+            if case .yy15(let a) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy12(try codeBlockForRule05(a: a))
             }
         case 6: /* gametree_list ::= gametree(a) gametree_list(b) */
             func codeBlockForRule06(a: SGFNode, b: [SGFNode]) throws -> [SGFNode] {
     return [a] + b
  }
-            if case .yy8(let a) = yySymbolOnStack(distanceFromTop: 1),
-               case .yy25(let b) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy25(try codeBlockForRule06(a: a, b: b))
+            if case .yy15(let a) = yySymbolOnStack(distanceFromTop: 1),
+               case .yy12(let b) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy12(try codeBlockForRule06(a: a, b: b))
             }
         case 7: /* sequence ::= node(a) */
             func codeBlockForRule07(a: SGFNode) throws -> SGFNode {
     return a
  }
-            if case .yy8(let a) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy8(try codeBlockForRule07(a: a))
+            if case .yy15(let a) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy15(try codeBlockForRule07(a: a))
             }
         case 8: /* sequence ::= node(a) sequence(b) */
             func codeBlockForRule08(a: SGFNode, b: SGFNode) throws -> SGFNode {
     a.children.append(b)
     return a
  }
-            if case .yy8(let a) = yySymbolOnStack(distanceFromTop: 1),
-               case .yy8(let b) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy8(try codeBlockForRule08(a: a, b: b))
+            if case .yy15(let a) = yySymbolOnStack(distanceFromTop: 1),
+               case .yy15(let b) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy15(try codeBlockForRule08(a: a, b: b))
             }
         case 9: /* node ::= SEMICOLUMN */
             func codeBlockForRule09() throws -> SGFNode {
     return SGFNode()
  }
-            return .yy8(try codeBlockForRule09())
+            return .yy15(try codeBlockForRule09())
         case 10: /* node ::= SEMICOLUMN property_list(a) */
             func codeBlockForRule10(a: [(String, [SGFCValueType])]) throws -> SGFNode {
     let node = SGFNode()
@@ -315,60 +311,60 @@ class SGFParser: CitronParser {
     }
     return node
  }
-            if case .yy17(let a) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy8(try codeBlockForRule10(a: a))
+            if case .yy11(let a) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy15(try codeBlockForRule10(a: a))
             }
         case 11: /* property_list ::= property(a) */
             func codeBlockForRule11(a: (String, [SGFCValueType])) throws -> [(String, [SGFCValueType])] {
     return [a]
  }
-            if case .yy21(let a) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy17(try codeBlockForRule11(a: a))
+            if case .yy4(let a) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy11(try codeBlockForRule11(a: a))
             }
         case 12: /* property_list ::= property(a) property_list(b) */
             func codeBlockForRule12(a: (String, [SGFCValueType]), b: [(String, [SGFCValueType])]) throws -> [(String, [SGFCValueType])] {
     return [a] + b
  }
-            if case .yy21(let a) = yySymbolOnStack(distanceFromTop: 1),
-               case .yy17(let b) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy17(try codeBlockForRule12(a: a, b: b))
+            if case .yy4(let a) = yySymbolOnStack(distanceFromTop: 1),
+               case .yy11(let b) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy11(try codeBlockForRule12(a: a, b: b))
             }
         case 13: /* property ::= PROP_INDENT(a) prop_value_list(b) */
             func codeBlockForRule13(a: SGFToken, b: [SGFCValueType]) throws -> (String, [SGFCValueType]) {
     return (a.toIdentifierString()!, b)
  }
             if case .yy0(let a) = yySymbolOnStack(distanceFromTop: 1),
-               case .yy7(let b) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy21(try codeBlockForRule13(a: a, b: b))
+               case .yy27(let b) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy4(try codeBlockForRule13(a: a, b: b))
             }
         case 14: /* prop_value_list ::= prop_value(a) */
             func codeBlockForRule14(a: SGFCValueType) throws -> [SGFCValueType] {
     return [a]
  }
-            if case .yy1(let a) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy7(try codeBlockForRule14(a: a))
+            if case .yy3(let a) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy27(try codeBlockForRule14(a: a))
             }
         case 15: /* prop_value_list ::= prop_value(a) prop_value_list(b) */
             func codeBlockForRule15(a: SGFCValueType, b: [SGFCValueType]) throws -> [SGFCValueType] {
     return [a] + b
  }
-            if case .yy1(let a) = yySymbolOnStack(distanceFromTop: 1),
-               case .yy7(let b) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy7(try codeBlockForRule15(a: a, b: b))
+            if case .yy3(let a) = yySymbolOnStack(distanceFromTop: 1),
+               case .yy27(let b) = yySymbolOnStack(distanceFromTop: 0) {
+                return .yy27(try codeBlockForRule15(a: a, b: b))
             }
         case 16: /* prop_value ::= SINGLE(a) */
             func codeBlockForRule16(a: SGFToken) throws -> SGFCValueType {
     return try a.toSGFCValueType()
  }
             if case .yy0(let a) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy1(try codeBlockForRule16(a: a))
+                return .yy3(try codeBlockForRule16(a: a))
             }
         case 17: /* prop_value ::= COMPOSE(a) */
             func codeBlockForRule17(a: SGFToken) throws -> SGFCValueType {
     return try a.toSGFCValueType()
  }
             if case .yy0(let a) = yySymbolOnStack(distanceFromTop: 0) {
-                return .yy1(try codeBlockForRule17(a: a))
+                return .yy3(try codeBlockForRule17(a: a))
             }
         default:
             fatalError("Can't invoke code block for rule number \(ruleNumber) - no such rule")
@@ -382,7 +378,7 @@ class SGFParser: CitronParser {
     }
 
     func yyUnwrapResultFromSymbol(_ symbol: CitronSymbol) -> CitronResult {
-        if case .yy25(let result) = symbol {
+        if case .yy12(let result) = symbol {
             return result
         } else {
             fatalError("Unexpected mismatch in result type")
@@ -412,7 +408,7 @@ class SGFParser: CitronParser {
 
     func yySymbolContent(_ symbol: CitronSymbol) -> Any { return symbol.typeErasedContent() }
 
-    let yyStartSymbolNumber: CitronSymbolNumber = 18
+    let yyStartSymbolNumber: CitronSymbolNumber = 17
     let yyEndStateNumber: CitronStateNumber = 11
 
     var yyErrorCaptureSavedError: (error: Error, isLexerError: Bool)? = nil

@@ -1,6 +1,5 @@
 %class_name SGFParser
 %token_type SGFToken
-%nonterminal_type value String
 %nonterminal_type c_value_type SGFCValueType
 %nonterminal_type prop_value SGFCValueType
 %nonterminal_type prop_value_list "[SGFCValueType]"
