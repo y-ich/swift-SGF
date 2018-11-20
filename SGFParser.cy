@@ -1,10 +1,8 @@
 %class_name SGFParser
 %token_type SGFToken
-%nonterminal_type c_value_type SGFCValueType
-%nonterminal_type prop_value SGFCValueType
-%nonterminal_type prop_value_list "[SGFCValueType]"
-%nonterminal_type property "(String, [SGFCValueType])"
-%nonterminal_type property_list "[(String, [SGFCValueType])]"
+%nonterminal_type prop_value_list "[String]"
+%nonterminal_type property "(String, [String])"
+%nonterminal_type property_list "[(String, [String])]"
 %nonterminal_type node SGFNode
 %nonterminal_type sequence SGFNode
 %nonterminal_type gametree SGFNode
@@ -72,18 +70,11 @@ property ::= PROP_INDENT(a) prop_value_list(b). {
     return (a.toIdentifierString()!, b)
 }
 
-prop_value_list ::= prop_value(a). {
-    return [a]
+prop_value_list ::= VALUE(a). {
+    return [a.toValueString()!]
 }
-prop_value_list ::= prop_value(a) prop_value_list(b). {
-    return [a] + b
-}
-
-prop_value ::= SINGLE(a). {
-    return try a.toSGFCValueType()
-}
-prop_value ::= COMPOSE(a). {
-    return try a.toSGFCValueType()
+prop_value_list ::= VALUE(a) prop_value_list(b). {
+    return [a.toValueString()!] + b
 }
 
 //value_type ::= NUMBER | REAL | DOUBLE | COLOR | SIMPLE_TEXT | TEXT | POINT | MOVE | STONE

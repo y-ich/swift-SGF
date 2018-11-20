@@ -11,7 +11,7 @@ final class SGFUsage: XCTestCase {
 
         // To access a property, you can refer properties.
         // Every value of each property is an array of "SGFCValueType"
-        XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
+        XCTAssertEqual(try! root["FF"]?.first, "4")
     }
 
     func testUsageSGFEncoder() {
@@ -29,14 +29,14 @@ final class SGFTests: XCTestCase {
         let inputString = "(;FF[4]GN[\\:日本語\\]:a]CA[]\r\n(;B[bb])(;B[cc]))"
         let collection = try! parseSGF(inputString)
         let root = collection[0]
-        XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
+        XCTAssertEqual(try! root["FF"]?.first, "4")
     }
 
     func testParseSGFNewLine() {
         let inputString = "(;FF[4];\nTB[ka:pa])"
         let collection = try! parseSGF(inputString)
         let root = collection[0]
-        XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
+        XCTAssertEqual(try! root["FF"]?.first, "4")
     }
 
     func testParseSGF_issue13() {
@@ -45,7 +45,7 @@ final class SGFTests: XCTestCase {
         do {
             let collection = try parseSGF(inputString)
             let root = collection[0]
-            XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
+            XCTAssertEqual(try! root["FF"]?.first, "4")
         } catch {
             XCTAssert(true)
         }
@@ -56,7 +56,7 @@ final class SGFTests: XCTestCase {
         let inputString = try! String(contentsOfFile: "/Users/yuji/Projects/swift-SGF/Tests/SGFTests/#17.sgf")
         let collection = try! parseSGF(inputString)
         let root = collection[0]
-        XCTAssertEqual(try! root.getValues(of: "FF")?.first, "4")
+        XCTAssertEqual(try! root["FF"]?.first, "4")
     }
 
     static var allTests = [

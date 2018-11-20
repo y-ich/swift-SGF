@@ -50,7 +50,7 @@ class SGFCursor {
         guard let c = current else {
             return
         }
-        if let i = c.children.firstIndex(where: { $0.properties[color]?.first == SGFCValueType.value(value) }) {
+        if let i = c.children.firstIndex(where: { $0.properties[color]?.first == value }) {
             let _ = forward(child: i)
         } else if c.children.count > 0 && c.children.allSatisfy({ $0.properties["B"] == nil && $0.properties["W"] == nil }) {
             // FGなどは先に進める
@@ -59,7 +59,7 @@ class SGFCursor {
         } else {
             history.append(c)
             let node = SGFNode()
-            node.properties[color] = [.value(value)]
+            node.properties[color] = [value]
             c.children.append(node)
             current = node
         }

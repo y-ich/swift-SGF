@@ -22,7 +22,7 @@ public class SGFEncoder {
     static func encode(node: SGFNode) -> String {
         var result = ";" + node.properties.map {
             let (k, v) = $0
-            return k + "[" + v.map { self.encode(cv: $0) }.joined(separator: "][") + "]"
+            return k + "[" + v.map { self.encode(text: $0) }.joined(separator: "][") + "]"
         }.joined()
         if node.children.count == 1 {
             result = result + encode(node: node.children[0])
@@ -30,14 +30,6 @@ public class SGFEncoder {
             result = result + encode(collection: node.children)
         }
         return result
-    }
-    static func encode(cv: SGFCValueType) -> String {
-        switch cv {
-        case let .value(v):
-            return encode(text: v)
-        case let .compose(v1, v2):
-            return encode(text: v1) + ":" + encode(text: v2)
-        }
     }
     
     static func encode(text: String) -> String {
