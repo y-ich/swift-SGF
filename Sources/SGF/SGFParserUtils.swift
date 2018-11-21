@@ -84,13 +84,18 @@ public func parseSGF(_ sgf: String) throws -> [SGFNode] {
         .regexPattern("\\s*\\(", { _ in (.punctuation, .OPEN_PARENTHESIS) }),
         .regexPattern("\\)\\s*", { _ in (.punctuation, .CLOSE_PARENTHESIS) }),
         .regexPattern(valueRegex, { str in
+            // workaround: firstMatch returns nil when str includes "\r\n".
+            let nsMutableString = NSMutableString(string: str)
+            let newline = try! NSRegularExpression(pattern: "\r\n")
+            newline.replaceMatches(in: nsMutableString, range: NSMakeRange(0, nsMutableString.length), withTemplate: "\n")
+            let s = nsMutableString as String
             let regex = try! NSRegularExpression(pattern: valueRegex)
-            let match = regex.firstMatch(in: str, range: NSMakeRange(0, str.count))!
-            let groups = match.groups(testedString: str)
+            let match = regex.firstMatch(in: s, range: NSMakeRange(0, s.count))!
+            let groups = match.groups(testedString: s)
             return (.value(groups[1]), .VALUE)
         }),
         .regexPattern("\\s*;\\s*", { _ in (.punctuation, .SEMICOLUMN) }),
-        .regexPattern("[A-Z]+", { str in (.identifier(str), .PROP_INDENT) }),
+        .regexPattern("[A-Za-z]+", { str in (.identifier(str), .PROP_INDENT) }),
     ])
 
     try lexer.tokenize(sgf) { t in

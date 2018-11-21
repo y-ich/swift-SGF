@@ -33,22 +33,46 @@ final class SGFTests: XCTestCase {
     }
 
     func testParseSGFNewLine() {
-        let inputString = "(;FF[4];\nTB[ka:pa])"
+        //let inputString = "(;\nGM[1]\nCoPyright[\n Copyright (c) PANDANET Inc. 2018\n  Permission to reproduce this game is given, provided proper credit is given.\n  No warrantee, implied or explicit, is understood.\n  Use of this game is an understanding and agreement of this notice.\n])"
+        let inputString = "(;\nGM[1]\r\nCoPyright[\r\n  Copyright (c) PANDANET Inc. 2018\r\n  Permission to reproduce this game is given, provided proper credit is given.\r\n  No warrantee, implied or explicit, is understood.\r\n  Use of this game is an understanding and agreement of this notice.\r\n])"
         let collection = try! parseSGF(inputString)
         let root = collection[0]
-        XCTAssertEqual(try! root["FF"]?.first, "4")
+        XCTAssertEqual(try! root["GM"]?.first, "1")
+    }
+
+    func testParseSGF_issue10() {
+        // Pandanet with CRLF
+        do {
+            let inputString = try String(contentsOfFile: "/Users/yuji/Projects/swift-SGF/Tests/SGFTests/#10.sgf")
+            let collection = try parseSGF(inputString)
+            let root = collection[0]
+            XCTAssertEqual(try root["GM"]?.first, "1")
+        } catch {
+            print("exception", error)
+            XCTAssert(false)
+        }
+    }
+
+    func testParseSGF_issue10_1() {
+        // Pandanet with LF
+        do {
+            let inputString = try String(contentsOfFile: "/Users/yuji/Projects/swift-SGF/Tests/SGFTests/#10_1.sgf")
+            let collection = try parseSGF(inputString)
+            let root = collection[0]
+            debugPrint(root)
+            XCTAssertEqual(try root["GM"]?.first, "1")
+        } catch let error {
+            print("exception", error)
+            XCTAssert(false)
+        }
     }
 
     func testParseSGF_issue13() {
         // KGSのSGFには:のエスケープ忘れがある。
         let inputString = try! String(contentsOfFile: "/Users/yuji/Projects/swift-SGF/Tests/SGFTests/#13.sgf")
-        do {
-            let collection = try parseSGF(inputString)
-            let root = collection[0]
-            XCTAssertEqual(try! root["FF"]?.first, "4")
-        } catch {
-            XCTAssert(true)
-        }
+        let collection = try! parseSGF(inputString)
+        let root = collection[0]
+        XCTAssertEqual(try! root["FF"]?.first, "4")
     }
 
     func testParseSGF_issue17() {
@@ -59,10 +83,13 @@ final class SGFTests: XCTestCase {
         XCTAssertEqual(try! root["FF"]?.first, "4")
     }
 
+    /*
     static var allTests = [
+        ("testParseSGF", testParseSGF),
+        ("testParseSGFNewLine", testParseSGFNewLine),
+        ("testParseSGF_issue10", testParseSGF_issue10),
         ("testParseSGF_issue13", testParseSGF_issue13),
         ("testParseSGF_issue17", testParseSGF_issue17),
-        ("testParseSGFNewLine", testParseSGFNewLine),
-        ("testParseSGF", testParseSGF),
     ]
+    */
 }
