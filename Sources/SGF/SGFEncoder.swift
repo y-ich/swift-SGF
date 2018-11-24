@@ -22,12 +22,12 @@ public class SGFEncoder {
     static func encode(node: SGFNode) -> String {
         var result = ";" + node.properties.map {
             let (k, v) = $0
-            return k + "[" + v.map { self.encode(text: $0) }.joined(separator: "][") + "]"
+            return k + v.map { "[\(self.encode(text: $0))]" }.joined()
         }.joined()
         if node.children.count == 1 {
-            result = result + encode(node: node.children[0])
+            result = result + "\n" + encode(node: node.children[0])
         } else if node.children.count > 1 {
-            result = result + encode(collection: node.children)
+            result = result + "\n" + encode(collection: node.children)
         }
         return result
     }

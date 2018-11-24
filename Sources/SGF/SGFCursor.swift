@@ -8,22 +8,23 @@
 
 import Foundation
 
-class SGFCursor {
+/// Cursor to traverse SGF collection
+open class SGFCursor {
     let collection: [SGFNode]
     var current: SGFNode?
     var history = [SGFNode]()
 
-    init() {
+    public init() {
         collection = try! parseSGF("(;FF[4]GM[1]SZ[19]KM[7.5])")
         current = collection[0]
     }
 
-    init(_ collection: [SGFNode]) {
+    public init(_ collection: [SGFNode]) {
         self.collection = collection
         current = collection[0]
     }
 
-    func forward(child: Int = 0) -> SGFNode? {
+    open func forward(child: Int = 0) -> SGFNode? {
         if let c = current {
             if child >= c.children.count {
                 return nil
@@ -40,7 +41,7 @@ class SGFCursor {
         }
     }
     
-    func back() -> SGFNode? {
+    open func back() -> SGFNode? {
         if let node = history.popLast() {
             current = node
             return current
@@ -50,7 +51,7 @@ class SGFCursor {
     }
  
     /// 該当の手があれば進めて、なければ変化を追加する。
-    func play(color: String, value: String) {
+    open func play(color: String, value: String) {
         guard let c = current else {
             return
         }
@@ -69,14 +70,14 @@ class SGFCursor {
         }
     }
     
-    func hasNext() -> Bool {
+    open func hasNext() -> Bool {
         guard let c = current else {
             return false
         }
         return c.children.count > 0
     }
 
-    func removeCurrent() -> SGFNode? {
+    open func removeCurrent() -> SGFNode? {
         let c = current
         if back() == nil {
             return nil

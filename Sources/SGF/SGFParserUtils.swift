@@ -37,7 +37,7 @@ typealias SGFNone = String
 /// A node class
 public class SGFNode {
     /// SGF propertes as Dictionary
-    public var properties: [String: [String]] = [:]
+    var properties: [String: [String]] = [:]
     /// children of this node
     public var children: [SGFNode] = []
 
