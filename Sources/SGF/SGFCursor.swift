@@ -41,8 +41,12 @@ class SGFCursor {
     }
     
     func back() -> SGFNode? {
-        current = history.popLast()
-        return current
+        if let node = history.popLast() {
+            current = node
+            return current
+        } else {
+            return nil
+        }
     }
  
     /// 該当の手があれば進めて、なければ変化を追加する。
@@ -70,5 +74,14 @@ class SGFCursor {
             return false
         }
         return c.children.count > 0
+    }
+
+    func removeCurrent() -> SGFNode? {
+        let c = current
+        if back() == nil {
+            return nil
+        }
+        current?.children.removeAll { $0 === c }
+        return c
     }
 }
