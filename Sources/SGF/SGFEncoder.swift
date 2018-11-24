@@ -36,6 +36,5 @@ public class SGFEncoder {
         return text
             .replacingOccurrences(of: "\\", with: "\\\\")
             .replacingOccurrences(of: "]", with: "\\]")
-            .replacingOccurrences(of: ":", with: "\\:")
     }
 }
