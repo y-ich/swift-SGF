@@ -13,17 +13,17 @@ open class SGFCursor {
     let collection: [SGFNode]
     var current: SGFNode?
     var history = [SGFNode]()
-
+    
     public init() {
         collection = try! parseSGF("(;FF[4]GM[1]SZ[19]KM[7.5])")
         current = collection[0]
     }
-
+    
     public init(_ collection: [SGFNode]) {
         self.collection = collection
         current = collection[0]
     }
-
+    
     open func forward(child: Int = 0) -> SGFNode? {
         if let c = current {
             if child >= c.children.count {
@@ -49,7 +49,7 @@ open class SGFCursor {
             return nil
         }
     }
- 
+    
     /// 該当の手があれば進めて、なければ変化を追加する。
     open func play(color: String, value: String) {
         guard let c = current else {
@@ -75,6 +75,10 @@ open class SGFCursor {
             return false
         }
         return c.children.count > 0
+    }
+
+    open func hasParent() -> Bool {
+        return !history.isEmpty
     }
 
     open func removeCurrent() -> SGFNode? {
