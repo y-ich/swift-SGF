@@ -89,4 +89,27 @@ open class SGFCursor {
         current?.children.removeAll { $0 === c }
         return c
     }
+    
+    func toSgf() -> String {
+        var root: SGFNode?
+        if let copied: SGFNode = history.reduce(nil, { parent, node in
+            let copied = SGFNode()
+            copied.properties = node.properties
+            if let p = parent {
+                p.children.append(copied)
+            } else {
+                root = copied
+            }
+            return copied
+        }) {
+            let current = SGFNode()
+            current.properties = self.current!.properties
+            copied.children.append(current)
+        } else {
+            let node = SGFNode()
+            node.properties = self.current!.properties
+            root = node
+        }
+        return SGFEncoder.encode(collection: [root!])
+    }
 }

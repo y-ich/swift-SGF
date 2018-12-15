@@ -93,3 +93,10 @@ final class SGFTests: XCTestCase {
     ]
     */
 }
+
+final class SGFCursorTests: XCTestCase {
+    func testToSgf() {
+        let cursor = SGFCursor()
+        XCTAssertEqual(cursor.toSgf(), "(;KM[7.5]FF[4]GM[1]SZ[19])")
+    }
+}
