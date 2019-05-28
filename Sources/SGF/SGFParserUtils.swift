@@ -9,14 +9,14 @@ enum SGFToken {
     case punctuation
     case identifier(String)
     case value(String)
-
+    
     func toIdentifierString() -> String? {
         if case .identifier(let id) = self {
             return id
         }
         return nil
     }
-
+    
     func toValueString() -> String? {
         if case .value(let value) = self {
             return value
@@ -40,9 +40,9 @@ public class SGFNode {
     var properties: [String: [String]] = [:]
     /// children of this node
     public var children: [SGFNode] = []
-
+    
     public init() { }
-
+    
     public subscript(id: String) -> [String]? {
         get {
             return properties[id]
@@ -51,7 +51,7 @@ public class SGFNode {
             properties[id] = newValue
         }
     }
-
+    
     // returns a leaf node through primary variation
     public func primaryLeafNode() -> SGFNode {
         var node = self
@@ -73,11 +73,11 @@ extension SGFNode: CustomDebugStringConvertible {
  - Parameter sgf: SGF string
  - Throws: when fails to parse
  - Returns: a collection, or array with one or more SGFNodes
-*/
+ */
 public func parseSGF(_ sgf: String) throws -> [SGFNode] {
     let parser = SGFParser()
     // parser.isTracingEnabled = true
-
+    
     typealias Lexer = CitronLexer<(SGFToken, SGFParser.CitronTokenCode)>
     let valueRegex = "\\s*\\[((?:\\\\.|[^\\\\\\]])*)\\]\\s*"
     let lexer = Lexer(rules: [
@@ -91,8 +91,8 @@ public func parseSGF(_ sgf: String) throws -> [SGFNode] {
         }),
         .regexPattern("\\s*;\\s*", { _ in (.punctuation, .SEMICOLUMN) }),
         .regexPattern("[A-Za-z]+", { str in (.identifier(str), .PROP_INDENT) }),
-    ])
-
+        ])
+    
     try lexer.tokenize(sgf) { t in
         try parser.consume(token: t.0, code: t.1)
     }

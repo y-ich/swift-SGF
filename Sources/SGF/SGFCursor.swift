@@ -13,17 +13,18 @@ open class SGFCursor {
     let collection: [SGFNode]
     var current: SGFNode?
     var history = [SGFNode]()
-    
-    public init() {
-        collection = try! parseSGF("(;FF[4]GM[1]SZ[19]KM[7.5])")
-        current = collection[0]
+    var moveNumber: Int {
+        get {
+            return history.count
+        }
     }
     
     public init(_ collection: [SGFNode]) {
         self.collection = collection
-        current = collection[0]
+        current = collection.first
     }
     
+    @discardableResult
     open func forward(child: Int = 0) -> SGFNode? {
         if let c = current {
             if child >= c.children.count {
@@ -41,6 +42,7 @@ open class SGFCursor {
         }
     }
     
+    @discardableResult
     open func back() -> SGFNode? {
         if let node = history.popLast() {
             current = node
@@ -49,17 +51,22 @@ open class SGFCursor {
             return nil
         }
     }
-    
+
+    open func toTop() {
+        history = []
+        current = collection[0]
+    }
+
     /// 該当の手があれば進めて、なければ変化を追加する。
     open func play(color: String, value: String) {
         guard let c = current else {
             return
         }
         if let i = c.children.firstIndex(where: { $0.properties[color]?.first == value }) {
-            let _ = forward(child: i)
+            forward(child: i)
         } else if c.children.count > 0 && c.children.allSatisfy({ $0.properties["B"] == nil && $0.properties["W"] == nil }) {
             // FGなどは先に進める
-            let _ = forward()
+            forward()
             play(color: color, value: value)
         } else {
             history.append(c)
@@ -81,6 +88,7 @@ open class SGFCursor {
         return !history.isEmpty
     }
 
+    @discardableResult
     open func removeCurrent() -> SGFNode? {
         let c = current
         if back() == nil {
