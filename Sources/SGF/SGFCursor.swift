@@ -120,4 +120,11 @@ open class SGFCursor {
         }
         return SGFEncoder.encode(collection: [root!])
     }
+    
+    func shallowCopy() -> SGFCursor {
+        let cursor = SGFCursor(collection)
+        cursor.current = current
+        cursor.history = history
+        return cursor
+    }
 }

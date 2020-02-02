@@ -12,7 +12,7 @@ let package = Package(
     name: "your-project",
     dependencies: [
         ...
-        .package(url: "https://github.com/y-ich/swift-DDP.git", .branch("master")),
+        .package(url: "https://github.com/y-ich/swift-SGF.git", .branch("master")),
     ],
     targets: [
         .target(
