@@ -10,9 +10,9 @@ import Foundation
 
 /// Cursor to traverse SGF collection
 open class SGFCursor {
-    let collection: [SGFNode]
-    var current: SGFNode?
-    var history = [SGFNode]()
+    public let collection: [SGFNode]
+    public var current: SGFNode?
+    public var history = [SGFNode]()
     var moveNumber: Int {
         get {
             return history.count
@@ -98,7 +98,7 @@ open class SGFCursor {
         return c
     }
     
-    func toSgf() -> String {
+    open func toSgf() -> String {
         var root: SGFNode?
         if let copied: SGFNode = history.reduce(nil, { parent, node in
             let copied = SGFNode()
@@ -121,7 +121,7 @@ open class SGFCursor {
         return SGFEncoder.encode(collection: [root!])
     }
     
-    func shallowCopy() -> SGFCursor {
+    open func shallowCopy() -> SGFCursor {
         let cursor = SGFCursor(collection)
         cursor.current = current
         cursor.history = history
