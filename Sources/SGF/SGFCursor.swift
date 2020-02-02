@@ -13,7 +13,7 @@ open class SGFCursor {
     public let collection: [SGFNode]
     public var current: SGFNode?
     public var history = [SGFNode]()
-    var moveNumber: Int {
+    public var moveNumber: Int {
         get {
             return history.count
         }
