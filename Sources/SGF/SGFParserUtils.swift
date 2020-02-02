@@ -62,9 +62,41 @@ public class SGFNode {
     }
 }
 
-extension SGFNode: CustomDebugStringConvertible {
-    public var debugDescription: String {
+public extension SGFNode: CustomDebugStringConvertible {
+    var debugDescription: String {
         return "\(properties), \(children.count) children"
+    }
+}
+
+public extension SGFNode {
+    var dimension: (Int, Int)? {
+        get {
+            let sz = self["SZ"]?.first ?? ""
+            let wh = sz.split(separator: ":")
+            switch wh.count {
+            case 0:
+                return (19, 19)
+            case 1:
+                if let size = Int(wh[0]) {
+                    return (size, size)
+                } else {
+                    return nil
+                }
+            case 2:
+                if let w = Int(wh[0]), let h = Int(wh[1]) {
+                    return (w, h)
+                } else {
+                    return nil
+                }
+            default:
+                return nil
+            }
+        }
+    }
+    var komi: Float? {
+        get {
+            return Float(self["KM"]?.first ?? "")
+        }
     }
 }
 
