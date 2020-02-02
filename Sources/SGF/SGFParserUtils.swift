@@ -62,8 +62,8 @@ public class SGFNode {
     }
 }
 
-public extension SGFNode: CustomDebugStringConvertible {
-    var debugDescription: String {
+extension SGFNode: CustomDebugStringConvertible {
+    public var debugDescription: String {
         return "\(properties), \(children.count) children"
     }
 }
